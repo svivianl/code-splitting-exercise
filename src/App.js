@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, lazy, useState } from "react";
 import "./App.css";
 
 import Page1 from "./Components/Page1";
@@ -34,16 +34,12 @@ const Part3 = (route, onRouteChange) => {
 const App = () => {
   const [route, setRoute] = useState("page1");
 
-  const onRouteChange = (route) => {
-    // Part 1 - No Code Splitting
-    setRoute(route);
-  };
   return (
     // Part 1 - No code splitting
-    // <Fragment>{Part1(route, onRouteChange)}</Fragment>
+    // <Fragment>{Part1(route, setRoute)}</Fragment>
 
     // Part 3 - Cleaner Code Splitting
-    <Fragment>{Part3(route, onRouteChange)}</Fragment>
+    <Fragment>{Part3(route, setRoute)}</Fragment>
   );
 };
 
