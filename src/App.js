@@ -1,25 +1,32 @@
-import React, { Component } from "react";
+import React, { Fragment, useState } from "react";
 import "./App.css";
 
 import Page1 from "./Components/Page1";
 // Part 1 - No Code Splitting
-// import Page2 from './Components/Page2';
-// import Page3 from './Components/Page3';
+import Page2 from "./Components/Page2";
+import Page3 from "./Components/Page3";
 // Part 3 - Cleaner Code Splitting
-import AsyncComponent from "./AsyncComponent";
+// import AsyncComponent from "./AsyncComponent";
 
-class App extends Component {
-  constructor() {
-    super();
-    this.state = {
-      route: "page1",
-      // Part 2 - Code Splitting - manual
-      // component: null
-    };
+const Part1 = (route, onRouteChange) => {
+  switch (route) {
+    case "page1":
+      return <Page1 onRouteChange={onRouteChange} />;
+    case "page2":
+      return <Page2 onRouteChange={onRouteChange} />;
+    default:
+      return <Page3 onRouteChange={onRouteChange} />;
   }
-  onRouteChange = (route) => {
+};
+
+const App = () => {
+  const [route, setRoute] = useState("page1");
+  // Part 2 - Code Splitting - manual
+  const [component, setComponent] = useState(null);
+
+  const onRouteChange = (route) => {
     // Part 1 - No Code Splitting
-    this.setState({ route: route });
+    setRoute(route);
     // Part 2 - Code Splitting - manual
     // if (route === 'page1') {
     //   this.setState({ route: route })
@@ -40,15 +47,9 @@ class App extends Component {
     //     });
     // }
   };
-  render() {
+  return (
     // Part 1 - No code splitting
-    // if (this.state.route === 'page1') {
-    //   return <Page1 onRouteChange={this.onRouteChange} />
-    // } else if (this.state.route === 'page2') {
-    //   return <Page2 onRouteChange={this.onRouteChange} />
-    // } else {
-    //   return <Page3 onRouteChange={this.onRouteChange} />
-    // }
+    <Fragment>{Part1(route, onRouteChange)}</Fragment>
 
     // Part 2 - No Code Splitting - manual
     // if (this.state.route === 'page1') {
@@ -58,16 +59,16 @@ class App extends Component {
     // }
 
     // Part 3 - Cleaner Code Splitting
-    if (this.state.route === "page1") {
-      return <Page1 onRouteChange={this.onRouteChange} />;
-    } else if (this.state.route === "page2") {
-      const AsyncPage2 = AsyncComponent(() => import("./Components/Page2"));
-      return <AsyncPage2 onRouteChange={this.onRouteChange} />;
-    } else {
-      const AsyncPage3 = AsyncComponent(() => import("./Components/Page3"));
-      return <AsyncPage3 onRouteChange={this.onRouteChange} />;
-    }
-  }
-}
+    // if (this.state.route === "page1") {
+    //   return <Page1 onRouteChange={this.onRouteChange} />;
+    // } else if (this.state.route === "page2") {
+    //   const AsyncPage2 = AsyncComponent(() => import("./Components/Page2"));
+    //   return <AsyncPage2 onRouteChange={this.onRouteChange} />;
+    // } else {
+    //   const AsyncPage3 = AsyncComponent(() => import("./Components/Page3"));
+    //   return <AsyncPage3 onRouteChange={this.onRouteChange} />;
+    // }
+  );
+};
 
 export default App;
