@@ -1,4 +1,4 @@
-import React, { Fragment, lazy, useState } from "react";
+import React, { Fragment, lazy, Suspense, useState } from "react";
 import "./App.css";
 
 import Page1 from "./Components/Page1";
@@ -6,7 +6,7 @@ import Page1 from "./Components/Page1";
 // import Page2 from "./Components/Page2";
 // import Page3 from "./Components/Page3";
 // Part 3 - Cleaner Code Splitting
-import AsyncComponent from "./AsyncComponent";
+// import AsyncComponent from "./AsyncComponent";
 
 // const Part1 = (route, onRouteChange) => {
 //   switch (route) {
@@ -19,18 +19,40 @@ import AsyncComponent from "./AsyncComponent";
 //   }
 // };
 
-const Part3 = (route, onRouteChange) => {
+// const Part3 = (route, onRouteChange) => {
+//   if (route === "page1") {
+//     return <Page1 onRouteChange={onRouteChange} />;
+//   }
+
+//   if (route === "page2") {
+//     const AsyncPage2 = AsyncComponent(() => import("./Components/Page2"));
+//     return <AsyncPage2 onRouteChange={onRouteChange} />;
+//   }
+
+//   const AsyncPage3 = AsyncComponent(() => import("./Components/Page3"));
+//   return <AsyncPage3 onRouteChange={onRouteChange} />;
+// };
+
+const Part4 = (route, onRouteChange) => {
   if (route === "page1") {
     return <Page1 onRouteChange={onRouteChange} />;
   }
 
   if (route === "page2") {
-    const AsyncPage2 = AsyncComponent(() => import("./Components/Page2"));
-    return <AsyncPage2 onRouteChange={onRouteChange} />;
+    const Page2Lazy = lazy(() => import("./Components/Page2"));
+    return (
+      <Suspense fallback={<div>Loading....</div>}>
+        <Page2Lazy onRouteChange={onRouteChange} />;
+      </Suspense>
+    );
   }
 
-  const AsyncPage3 = AsyncComponent(() => import("./Components/Page3"));
-  return <AsyncPage3 onRouteChange={onRouteChange} />;
+  const Page3Lazy = lazy(() => import("./Components/Page3"));
+  return (
+    <Suspense fallback={<div>Loading....</div>}>
+      <Page3Lazy onRouteChange={onRouteChange} />;
+    </Suspense>
+  );
 };
 
 const App = () => {
@@ -41,7 +63,10 @@ const App = () => {
     // <Fragment>{Part1(route, setRoute)}</Fragment>
 
     // Part 3 - Cleaner Code Splitting
-    <Fragment>{Part3(route, setRoute)}</Fragment>
+    // <Fragment>{Part3(route, setRoute)}</Fragment>
+
+    // Part 4 - Lazy
+    <Fragment>{Part4(route, setRoute)}</Fragment>
   );
 };
 
