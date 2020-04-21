@@ -22,13 +22,15 @@ import AsyncComponent from "./AsyncComponent";
 const Part3 = (route, onRouteChange) => {
   if (route === "page1") {
     return <Page1 onRouteChange={onRouteChange} />;
-  } else if (route === "page2") {
+  }
+
+  if (route === "page2") {
     const AsyncPage2 = AsyncComponent(() => import("./Components/Page2"));
     return <AsyncPage2 onRouteChange={onRouteChange} />;
-  } else {
-    const AsyncPage3 = AsyncComponent(() => import("./Components/Page3"));
-    return <AsyncPage3 onRouteChange={onRouteChange} />;
   }
+
+  const AsyncPage3 = AsyncComponent(() => import("./Components/Page3"));
+  return <AsyncPage3 onRouteChange={onRouteChange} />;
 };
 
 const App = () => {
